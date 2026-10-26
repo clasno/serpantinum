@@ -223,6 +223,12 @@ in
   settingsSubmodule = freeform {
     general = mkOption { type = generalSubmodule; default = { }; };
     bar = mkOption { type = barSubmodule; default = { }; };
+    media = mkOption {
+      type = freeform {
+        musicSource = mkOpt (types.enum [ "automatic" "prefer-spotify" "spotify-only" "browser-only" ]) "Global MPRIS source for bars and music widgets. Defaults to automatic.";
+      };
+      default = { };
+    };
     dock = mkOption { type = dockSubmodule; default = { }; };
     launcher = mkOption { type = launcherSubmodule; default = { }; };
     osd = mkOption { type = osdSubmodule; default = { }; };

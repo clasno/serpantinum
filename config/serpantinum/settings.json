@@ -6,6 +6,9 @@
     "weatherInterval": 15,
     "weatherUnit": "metric"
   },
+  "media": {
+    "musicSource": "automatic"
+  },
   "syspanel": {
     "clipExpandProgress": 0,
     "clipExpanded": false,

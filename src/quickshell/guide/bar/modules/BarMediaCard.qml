@@ -11,6 +11,44 @@ BarModuleCard {
     moduleId: "media"
     previewSideHeight: 160
 
+    readonly property var musicSources: ["automatic", "prefer-spotify", "spotify-only", "browser-only"]
+
+    SettingsRow {
+        rootObj: card.rootObj
+        settingId: "media_music_source"
+        searchKeywords: "media music source spotify browser mpris priority automatic"
+        baseColor: Qt.alpha(ThemeBackend.surface1, 0.35)
+        icon: "󰎈"
+        title: I18n.t("guide.bar.media.source.title", "Music source")
+        description: I18n.t("guide.bar.media.source.desc", "Applies to all bars and music/lyrics widgets. Browsers must provide MPRIS. The music popup can select its own player.")
+
+        Dropdown {
+            id: musicSourceDropdown
+            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+            Layout.preferredWidth: rootObj.s(200)
+            Layout.preferredHeight: rootObj.s(32)
+            fontPixelSize: rootObj.s(11)
+            options: [
+                I18n.t("guide.bar.media.source.automatic", "Automatic"),
+                I18n.t("guide.bar.media.source.prefer_spotify", "Prefer Spotify"),
+                I18n.t("guide.bar.media.source.spotify_only", "Spotify only"),
+                I18n.t("guide.bar.media.source.browser_only", "Browser only")
+            ]
+            accentColor: ThemeBackend.mauve
+            baseColor: ThemeBackend.surface0
+            dropdownColor: ThemeBackend.surface0
+            textColor: ThemeBackend.text
+            activeTextColor: ThemeBackend.crust
+            onSelected: function(index, value) { card.tab.setMusicSource(card.musicSources[index]); }
+            onVisibleChanged: if (!visible) closePopup()
+        }
+        Binding {
+            target: musicSourceDropdown
+            property: "currentIndex"
+            value: Math.max(0, card.musicSources.indexOf(card.tab.musicSource))
+        }
+    }
+
     widgetComponent: Component {
         BarPreviewWidget {
             property string mediaInfoMode: tab.mediaInfoMode

@@ -140,6 +140,37 @@ The configuration file is located at `~/.config/serpantinum/settings.json` (or `
 | `bar.mediaShowIcon` | `boolean` | `true` | Displays album art or music icon. |
 | `bar.mediaShowControls` | `boolean` | `true` | Displays previous, play and next buttons. |
 
+### Music source
+
+The source option is available in **Settings → Bar → Modules → Media**.
+It is stored under `media`, because the source also controls desktop music
+and lyrics widgets, including widgets on other monitors.
+
+| Key | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `media.musicSource` | `string` | `"automatic"` | `"automatic"`, `"prefer-spotify"`, `"spotify-only"`, or `"browser-only"`. |
+
+- **Automatic** keeps the existing selection order: playing, last-playing,
+  loaded, controllable, then any available player. Ties use the MPRIS D-Bus name
+  (`dbusName` in Quickshell), not track metadata.
+- **Prefer Spotify** chooses a playing Spotify instance first; a paused or
+  stopped Spotify does not block another playing application.
+- **Spotify only / Browser only** restrict candidates before applying that
+  order. Paused players remain controllable; these modes never fall back to an
+  application outside the selected category.
+- Browser recognition uses MPRIS application names and identities (including
+  Brave, Chromium, Chrome, Firefox, LibreWolf, Floorp, Zen, Vivaldi, Opera,
+  Edge and GNOME Web). Only browsers that actually export MPRIS are available.
+  No tabs, profiles, audio interception, or instance IDs are stored.
+
+The music popup retains its manual player picker. When it selects another
+player, its lyrics, seeking and local-file picker use a separate lyrics context;
+the bar and desktop widgets continue following the global source. A track or
+source change clears old lyrics immediately; cached matching lyrics can reappear
+without a network request.
+
+Missing keys use the default above, so existing settings need no migration.
+
 ### Launcher
 
 | Key | Type | Default | Description |

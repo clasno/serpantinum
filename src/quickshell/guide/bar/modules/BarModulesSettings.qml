@@ -193,6 +193,10 @@ GuideTab {
         return "duration";
     }
 
+    readonly property string musicSource: Config.getSetting("media.musicSource", "automatic")
+
+    function setMusicSource(value) { Config.setSetting("media.musicSource", value); }
+
     property int mediaWidth: {
         let bs = Config.getSetting("bar", {});
         if (bs && bs.mediaWidth !== undefined) return Math.round(Number(bs.mediaWidth));
