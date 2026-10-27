@@ -10,60 +10,108 @@ TestCase {
             isPlaying: playing, playbackState: playing ? 1 : 2, trackTitle: "Track", canControl: true};
     }
 
-    function test_modes_data() {
+    function test_selection_data() {
         let rows = [];
-        for (let mode of ["automatic", "prefer-spotify", "spotify-only", "browser-only"]) {
-            for (let spotify of ["playing", "paused", "stopped", "closed"]) {
-                for (let browser of ["playing", "paused", "closed"]) {
-                    rows.push({tag: mode + "/" + spotify + "/" + browser, mode: mode, spotify: spotify, browser: browser});
+        for (let mode of ["automatic", "desktop:custom-player"]) {
+            for (let app of ["playing", "paused", "stopped", "closed"]) {
+                for (let browser of ["playing", "paused", "stopped", "closed"]) {
+                    rows.push({tag: mode + "/" + app + "/" + browser, mode: mode, app: app, browser: browser});
                 }
             }
         }
         return rows;
     }
 
-    function test_modes(data) {
-        let s = player("spotify", data.spotify === "playing", "Spotify");
-        if (data.spotify === "stopped") s.playbackState = 0;
+    function test_selection(data) {
+        let s = player("custom-player.instance123", data.app === "playing", "Custom Player");
+        s.desktopEntry = "custom-player";
+        if (data.app === "stopped") s.playbackState = 0;
         let b = player("chromium.instance42", data.browser === "playing", "Brave");
+        if (data.browser === "stopped") b.playbackState = 0;
         let players = [];
-        if (data.spotify !== "closed") players.push(s);
+        if (data.app !== "closed") players.push(s);
         if (data.browser !== "closed") players.push(b);
         let selected = Selection.select(players, data.mode, "", 0);
-        if (data.mode === "spotify-only") compare(selected, data.spotify === "closed" ? null : s);
-        else if (data.mode === "browser-only") compare(selected, data.browser === "closed" ? null : b);
-        else if (data.mode === "prefer-spotify" && s.isPlaying) compare(selected, s);
+        if (data.mode !== "automatic") compare(selected, data.app === "closed" ? null : s);
         else if (data.browser === "playing") compare(selected, b);
-        else if (data.spotify === "playing") compare(selected, s);
-        else compare(selected, data.browser !== "closed" ? b : data.spotify !== "closed" ? s : null);
+        else if (data.app === "playing") compare(selected, s);
+        else if (data.browser === "paused") compare(selected, b);
+        else if (data.app === "paused") compare(selected, s);
+        else compare(selected, data.browser !== "closed" ? b : data.app !== "closed" ? s : null);
     }
 
-    function test_identityAndInstances() {
-        for (let name of ["brave.instance42", "chromium.instance9", "google-chrome.instance1", "firefox.instance7", "librewolf", "microsoft-edge.instance4"]) {
-            compare(Selection.application(player(name, true)), "browser");
+    function test_stableKeys() {
+        for (let name of ["custom.instance42", "custom.instance_abc", "custom.pid99", "custom-123", "custom.123.456"]) {
+            compare(Selection.applicationKeys(player(name, true))[0], "mpris:custom");
         }
-        compare(Selection.application(player("unknown.instance1", true, "Brave")), "browser");
-        compare(Selection.application(player("spotify.instance4", true)), "spotify");
-        let other = player("vlc", true, "VLC");
-        other.trackTitle = "Spotify in Brave";
-        compare(Selection.application(other), "other");
-        compare(Selection.select([other], "browser-only", "", 0), null);
-        compare(Selection.select([], "browser-only", "", 0), null);
+        let p = player("arbitrary.instance7", true, "Any Application");
+        p.desktopEntry = "org.example.Player.desktop";
+        compare(Selection.applicationKeys(p)[0], "desktop:org.example.Player");
+        compare(Selection.applicationKeys({identity: "Unknown Player"})[0], "identity:Unknown Player");
+        compare(Selection.applicationKeys({dbusName: ":1.123", identity: "Unknown Player"})[0], "identity:Unknown Player");
+        compare(Selection.applicationKeys({}).length, 0);
+        compare(Selection.applicationKeys(player("org.example.pidgin", true))[0], "mpris:org.example.pidgin");
+        compare(Selection.applicationKeys(player("org.example.instanceplayer", true))[0], "mpris:org.example.instanceplayer");
+        compare(Selection.select([p], "desktop:missing", "", 0), null);
+        compare(Selection.select([], "desktop:missing", "", 0), null);
     }
 
-    function test_determinismAndMetadata() {
-        let a = player("firefox.instance2", true);
+    function test_instancesAndReconnect() {
+        let a = player("custom.instance2", false, "Custom");
+        let b = player("custom.instance3", true, "Custom");
+        compare(Selection.select([a, b], "mpris:custom", "", 0), b);
+        compare(Selection.select([a, b], "mpris:custom", "", 0, a.dbusName), a);
+        compare(Selection.select([b, a], "mpris:custom", "", 0, a.dbusName), a);
+        compare(Selection.select([b], "mpris:custom", "", 0, a.dbusName), b);
+        compare(Selection.select([], "mpris:custom", "", 0, a.dbusName), null);
+        compare(Selection.select([b], "mpris:custom", "", 0), b);
+    }
+
+    function test_discovery() {
+        let a = player("custom.instance2", true, "Custom");
+        let b = player("custom.instance3", true, "Custom");
+        let entries = Selection.sources([b, null, a], "mpris:custom", "Custom");
+        compare(entries.length, 1);
+        compare(entries[0].key, "mpris:custom");
+        compare(entries[0].available, true);
+        a.desktopEntry = "org.example.Custom";
+        entries = Selection.sources([a, b], "automatic", "");
+        compare(entries.length, 1);
+        compare(entries[0].key, "desktop:org.example.Custom");
+        compare(Selection.select([a, b], "desktop:org.example.Custom", "", 0, b.dbusName), b);
+        entries = Selection.sources([a], "mpris:custom", "Custom");
+        compare(entries[0].key, "mpris:custom");
+        compare(Selection.select([a], "mpris:custom", "", 0), a);
+        entries = Selection.sources([], "mpris:custom", "Saved Custom");
+        compare(entries.length, 1);
+        compare(entries[0].name, "Saved Custom");
+        compare(entries[0].available, false);
+        compare(Selection.sources([], "automatic", "").length, 0);
+        compare(Selection.sources([{}], "automatic", "").length, 0);
+        a.identity = "   ";
+        compare(Selection.sources([a], "automatic", "")[0].name, "org.example.Custom");
+        b.desktopEntry = "org.example.Other";
+        compare(Selection.sources([a, b], "automatic", "").length, 2);
+    }
+
+    function test_automaticHistoryAndMetadata() {
+        let a = player("firefox.instance2", false);
         let b = player("chromium.instance3", true);
-        for (let mode of ["automatic", "browser-only", "prefer-spotify"]) {
-            compare(Selection.select([a, b], mode, "", 0), b);
-            a.trackTitle = "Changed title";
-            a.position = 300;
-            a.trackArtUrl = "file:///new-cover";
-            compare(Selection.select([b, a], mode, a.dbusName, 0), b);
-        }
-        a.isPlaying = false;
+        compare(Selection.select([a, b], "automatic", a.dbusName, 0), b);
         b.isPlaying = false;
         compare(Selection.select([a, b], "automatic", a.dbusName, 0), a);
-        compare(Selection.select([a, b], "invalid-future-value", a.dbusName, 0), a);
+        a.trackTitle = "Changed title";
+        a.position = 300;
+        compare(Selection.select([b, a], "automatic", a.dbusName, 0), a);
+        a.canControl = false;
+        b.canControl = false;
+        a.playbackState = 0;
+        b.playbackState = 0;
+        compare(Selection.select([a, b], "automatic", "", 0), b);
+    }
+
+    function test_legacyPolicies() {
+        for (let key of ["prefer-spotify", "spotify-only", "browser-only", ""])
+            compare(Selection.sourceKey(key), "automatic");
     }
 }

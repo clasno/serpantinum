@@ -13,10 +13,10 @@ PROPERTIES = "org.freedesktop.DBus.Properties"
 
 
 class Player(dbus.service.Object):
-    def __init__(self, name, identity):
+    def __init__(self, name, identity, desktop=None):
         self.bus = dbus.SessionBus(private=True)
         self.name = dbus.service.BusName(ROOT + "." + name, self.bus)
-        self.root = {"Identity": identity, "DesktopEntry": identity.lower(), "CanQuit": False,
+        self.root = {"Identity": identity, "DesktopEntry": identity.lower() if desktop is None else desktop, "CanQuit": False,
                      "CanRaise": False, "HasTrackList": False, "SupportedUriSchemes": dbus.Array([], signature="s"),
                      "SupportedMimeTypes": dbus.Array([], signature="s")}
         self.props = {"PlaybackStatus": "Playing", "LoopStatus": "None", "Rate": 1.0,
@@ -45,6 +45,18 @@ class Player(dbus.service.Object):
         self.props[key] = value
         self.PropertiesChanged(PLAYER, {key: value}, [])
 
+    @dbus.service.method(PLAYER, in_signature="", out_signature="")
+    def PlayPause(self):
+        self.update("PlaybackStatus", "Paused" if self.props["PlaybackStatus"] == "Playing" else "Playing")
+
+    @dbus.service.method(PLAYER, in_signature="", out_signature="")
+    def Play(self):
+        self.update("PlaybackStatus", "Playing")
+
+    @dbus.service.method(PLAYER, in_signature="", out_signature="")
+    def Pause(self):
+        self.update("PlaybackStatus", "Paused")
+
 
 class Control(dbus.service.Object):
     def __init__(self):
@@ -64,6 +76,12 @@ class Control(dbus.service.Object):
             self.retired.append(player)
         elif action == "open":
             self.players[name] = Player("firefox.instance7", "Firefox")
+        elif action == "reconnect":
+            self.players[name] = Player("custom.instance999", "Custom Player", "org.example.Custom")
+        elif action == "second-instance":
+            self.players[name] = Player("custom.instance1", "Custom Player", "org.example.Custom")
+        elif action == "custom":
+            self.players[name] = Player("custom.instance42", "Custom Player", "org.example.Custom")
         elif action == "metadata":
             metadata = dict(self.players[name].props["Metadata"])
             metadata["xesam:title"] = "Changed title"

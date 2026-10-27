@@ -586,12 +586,10 @@
       },
       "media": {
         "source": {
-          "title": "Music source",
-          "desc": "Applies to all bars and music/lyrics widgets. Browsers must provide MPRIS. The music popup can select its own player.",
+          "title": "Media source",
+          "desc": "Choose an MPRIS application for bars and desktop widgets. The music popup can select its own player.",
           "automatic": "Automatic",
-          "prefer_spotify": "Prefer Spotify",
-          "spotify_only": "Spotify only",
-          "browser_only": "Browser only"
+          "unavailable": "Unavailable"
         },
         "info_mode": {
           "title": "Secondary info",

@@ -140,7 +140,7 @@ The configuration file is located at `~/.config/serpantinum/settings.json` (or `
 | `bar.mediaShowIcon` | `boolean` | `true` | Displays album art or music icon. |
 | `bar.mediaShowControls` | `boolean` | `true` | Displays previous, play and next buttons. |
 
-### Music source
+### Media source
 
 The source option is available in **Settings → Bar → Modules → Media**.
 It is stored under `media`, because the source also controls desktop music
@@ -148,20 +148,22 @@ and lyrics widgets, including widgets on other monitors.
 
 | Key | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
-| `media.musicSource` | `string` | `"automatic"` | `"automatic"`, `"prefer-spotify"`, `"spotify-only"`, or `"browser-only"`. |
+| `media.musicSource` | `string` | `"automatic"` | Automatic selection or the application key saved by the Media source selector. |
+| `media.musicSourceName` | `string` | `""` | Display name retained while the selected application is unavailable. |
 
 - **Automatic** keeps the existing selection order: playing, last-playing,
   loaded, controllable, then any available player. Ties use the MPRIS D-Bus name
   (`dbusName` in Quickshell), not track metadata.
-- **Prefer Spotify** chooses a playing Spotify instance first; a paused or
-  stopped Spotify does not block another playing application.
-- **Spotify only / Browser only** restrict candidates before applying that
-  order. Paused players remain controllable; these modes never fall back to an
-  application outside the selected category.
-- Browser recognition uses MPRIS application names and identities (including
-  Brave, Chromium, Chrome, Firefox, LibreWolf, Floorp, Zen, Vivaldi, Opera,
-  Edge and GNOME Web). Only browsers that actually export MPRIS are available.
-  No tabs, profiles, audio interception, or instance IDs are stored.
+- Applications are discovered through MPRIS, without an application allowlist.
+  Manual selection never falls back to another application. The preference
+  remains visible when unavailable and reconnects when the application returns.
+- Keys use `desktop:<DesktopEntry>`, then `mpris:<service>` with instance/PID
+  suffixes removed, or `identity:<Identity>` when no service identifier exists.
+  MPRIS has no universal application ID: fallback keys depend on the identifiers
+  supplied by the application. Runtime service names are never saved as instance preferences.
+- Multiple instances are grouped by application. Initial selection follows the
+  automatic rules within that application; the chosen instance stays selected,
+  including while paused, until it disconnects.
 
 The music popup retains its manual player picker. When it selects another
 player, its lyrics, seeking and local-file picker use a separate lyrics context;
@@ -169,7 +171,8 @@ the bar and desktop widgets continue following the global source. A track or
 source change clears old lyrics immediately; cached matching lyrics can reappear
 without a network request.
 
-Missing keys use the default above, so existing settings need no migration.
+Changes apply immediately and persist across restarts. Missing keys and legacy
+category policies from earlier versions of this feature use Automatic.
 
 ### Launcher
 

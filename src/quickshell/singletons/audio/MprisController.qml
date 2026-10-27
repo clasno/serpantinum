@@ -9,7 +9,12 @@ import "PlayerSelection.js" as PlayerSelection
 Singleton {
     id: root
 
-    readonly property string musicSource: Config.getSetting("media.musicSource", "automatic")
+    readonly property string musicSource: PlayerSelection.sourceKey(Config.getSetting("media.musicSource", "automatic"))
+    readonly property var musicSources: {
+        let _ = _playerWatch;
+        return PlayerSelection.sources(Mpris.players.values, musicSource,
+            Config.getSetting("media.musicSourceName", ""));
+    }
 
     readonly property var _playerWatch: {
         let players = Mpris.players.values;
@@ -19,6 +24,7 @@ Singleton {
             states.push(players[i].canControl);
             states.push(PlayerSelection.busName(players[i]));
             states.push(players[i].identity);
+            states.push(players[i].desktopEntry);
             states.push(players[i].playbackState);
             states.push(players[i].trackTitle);
         }
@@ -26,12 +32,13 @@ Singleton {
     }
 
     property string lastPlayingBus: ""
+    property string selectedBus: ""
 
     readonly property MprisPlayer activePlayer: {
         let _ = _playerWatch;
         try {
             return PlayerSelection.select(Mpris.players.values, root.musicSource,
-                root.lastPlayingBus, MprisPlaybackState.Stopped);
+                root.lastPlayingBus, MprisPlaybackState.Stopped, root.selectedBus);
         } catch (e) {
             return null;
         }
@@ -84,6 +91,7 @@ Singleton {
     property bool fetchPending: false
 
     function rememberPlayingPlayer() {
+        root.selectedBus = root.activePlayer ? PlayerSelection.busName(root.activePlayer) : "";
         if (root.activePlayer && root.activePlayer.isPlaying)
             root.lastPlayingBus = PlayerSelection.busName(root.activePlayer);
     }

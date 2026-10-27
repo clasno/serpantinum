@@ -36,7 +36,7 @@ palette_dir = Path(env["HOME"]) / ".local/state/serpantinum"
 palette_dir.mkdir(parents=True)
 for filename in ("qs_colors.json", "qs_matugen_colors.json"):
     (palette_dir / filename).write_text("{}\n")
-for filename in ("lyrics.qml", "lyrics_io.qml", "mpris.qml"):
+for filename in ("lyrics.qml", "lyrics_io.qml", "mpris.qml", "source_settings.qml"):
     source = (ROOT / "tests/media" / filename).read_text()
     (work / filename).write_text(source.replace('"../../src/quickshell', '"src/quickshell'))
 env.update(QT_QPA_PLATFORM="offscreen", QT_QUICK_BACKEND="software", QT_FORCE_STDERR_LOGGING="1",
@@ -76,4 +76,5 @@ run("selection", [qt_tests, "-input", "tests/media/tst_selection.qml", "-o", "-,
 run("lyrics", ["quickshell", "--no-color", "-p", str(work / "lyrics.qml")], "PASS: LyricsContexts")
 run("lyrics-io", ["quickshell", "--no-color", "-p", str(work / "lyrics_io.qml")], "PASS: Lyrics IO")
 run("mpris", [sys.executable, str(ROOT / "tests/media/mpris_fixture.py"), str(work / "mpris.qml")], "PASS: MPRIS integration")
+run("source-settings", [sys.executable, str(ROOT / "tests/media/source_settings.py"), str(work / "source_settings.qml")], "PASS: Source settings")
 print(f"Diagnostics (outside the repository): {work}")

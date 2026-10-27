@@ -193,9 +193,11 @@ GuideTab {
         return "duration";
     }
 
-    readonly property string musicSource: Config.getSetting("media.musicSource", "automatic")
+    readonly property string musicSource: MprisController.musicSource
 
-    function setMusicSource(value) { Config.setSetting("media.musicSource", value); }
+    function setMusicSource(value, name) {
+        Config.updateJsonBulk({"media.musicSource": value, "media.musicSourceName": name || ""});
+    }
 
     property int mediaWidth: {
         let bs = Config.getSetting("bar", {});

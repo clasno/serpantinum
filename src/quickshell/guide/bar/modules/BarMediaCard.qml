@@ -11,16 +11,17 @@ BarModuleCard {
     moduleId: "media"
     previewSideHeight: 160
 
-    readonly property var musicSources: ["automatic", "prefer-spotify", "spotify-only", "browser-only"]
+    readonly property var sources: MprisController.musicSources
+    readonly property var musicSources: ["automatic"].concat(sources.map(source => source.key))
 
     SettingsRow {
         rootObj: card.rootObj
         settingId: "media_music_source"
-        searchKeywords: "media music source spotify browser mpris priority automatic"
+        searchKeywords: "media music source player application mpris automatic"
         baseColor: Qt.alpha(ThemeBackend.surface1, 0.35)
         icon: "󰎈"
-        title: I18n.t("guide.bar.media.source.title", "Music source")
-        description: I18n.t("guide.bar.media.source.desc", "Applies to all bars and music/lyrics widgets. Browsers must provide MPRIS. The music popup can select its own player.")
+        title: I18n.t("guide.bar.media.source.title", "Media source")
+        description: I18n.t("guide.bar.media.source.desc", "Choose an MPRIS application for bars and desktop widgets. The music popup can select its own player.")
 
         Dropdown {
             id: musicSourceDropdown
@@ -28,18 +29,21 @@ BarModuleCard {
             Layout.preferredWidth: rootObj.s(200)
             Layout.preferredHeight: rootObj.s(32)
             fontPixelSize: rootObj.s(11)
-            options: [
-                I18n.t("guide.bar.media.source.automatic", "Automatic"),
-                I18n.t("guide.bar.media.source.prefer_spotify", "Prefer Spotify"),
-                I18n.t("guide.bar.media.source.spotify_only", "Spotify only"),
-                I18n.t("guide.bar.media.source.browser_only", "Browser only")
-            ]
+            options: [I18n.t("guide.bar.media.source.automatic", "Automatic")].concat(card.sources.map(source => {
+                let name = source.name;
+                if (card.sources.filter(other => other.name === name).length > 1)
+                    name += " (" + source.key + ")";
+                return source.available ? name : name + " — " + I18n.t("guide.bar.media.source.unavailable", "Unavailable");
+            }))
             accentColor: ThemeBackend.mauve
             baseColor: ThemeBackend.surface0
             dropdownColor: ThemeBackend.surface0
             textColor: ThemeBackend.text
             activeTextColor: ThemeBackend.crust
-            onSelected: function(index, value) { card.tab.setMusicSource(card.musicSources[index]); }
+            onSelected: function(index, value) {
+                if (index >= 0 && index < card.musicSources.length)
+                    card.tab.setMusicSource(card.musicSources[index], index > 0 ? card.sources[index - 1].name : "");
+            }
             onVisibleChanged: if (!visible) closePopup()
         }
         Binding {

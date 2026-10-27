@@ -225,7 +225,8 @@ in
     bar = mkOption { type = barSubmodule; default = { }; };
     media = mkOption {
       type = freeform {
-        musicSource = mkOpt (types.enum [ "automatic" "prefer-spotify" "spotify-only" "browser-only" ]) "Global MPRIS source for bars and music widgets. Defaults to automatic.";
+        musicSource = mkOpt types.str "Global MPRIS application key selected in Settings, or automatic (the default).";
+        musicSourceName = mkOpt types.str "Display name retained when the selected MPRIS application is unavailable. Defaults to an empty string.";
       };
       default = { };
     };
