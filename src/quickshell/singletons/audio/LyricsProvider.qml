@@ -45,6 +45,8 @@ Item {
     property int requestGeneration: 0
     property var cacheReader: null
     property var fileReader: null
+    readonly property bool contentAvailable: isMediaActive && hasLyrics && !loading
+    readonly property bool showContent: !MprisController.hideUnavailableLyrics || contentAvailable
 
     function invalidate() {
         requestGeneration++;
@@ -267,7 +269,7 @@ Item {
         id: positionTimer
         interval: 100
         repeat: true
-        running: root.subscribers > 0 && root.isMediaActive && (root.player ? root.player.isPlaying : false)
+        running: root.subscribers > 0 && root.contentAvailable && (root.player ? root.player.isPlaying : false)
         onRunningChanged: {
             if (running) positionTimer.interval = 25;
         }

@@ -8,7 +8,9 @@
   },
   "media": {
     "musicSource": "automatic",
-    "musicSourceName": ""
+    "musicSourceName": "",
+    "hideWhenIdle": false,
+    "hideUnavailableLyrics": false
   },
   "syspanel": {
     "clipExpandProgress": 0,

@@ -53,6 +53,44 @@ BarModuleCard {
         }
     }
 
+    SettingsRow {
+        rootObj: card.rootObj
+        settingId: "media_hide_when_idle"
+        searchKeywords: "media music hide idle paused stopped unavailable track"
+        baseColor: Qt.alpha(ThemeBackend.surface1, 0.35)
+        icon: "󰏤"
+        title: I18n.t("guide.bar.media.hide_idle.title", "Hide media when no track is available")
+        description: I18n.t("guide.bar.media.hide_idle.desc", "Keep Media visible while paused. Hide it when no track is available.")
+        Toggle {
+            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+            checked: card.tab.mediaHideWhenIdle
+            accentColor: ThemeBackend.mauve
+            baseColor: ThemeBackend.surface1
+            handleColor: ThemeBackend.crust
+            handleOffColor: ThemeBackend.text
+            onToggled: function(c) { card.tab.setMediaHideWhenIdle(c); }
+        }
+    }
+
+    SettingsRow {
+        rootObj: card.rootObj
+        settingId: "media_hide_unavailable_lyrics"
+        searchKeywords: "media music lyrics hide unavailable empty desktop"
+        baseColor: Qt.alpha(ThemeBackend.surface1, 0.35)
+        icon: "󰍜"
+        title: I18n.t("guide.bar.media.hide_lyrics.title", "Hide unavailable lyrics")
+        description: I18n.t("guide.bar.media.hide_lyrics.desc", "Hide desktop lyrics and their background while no lyrics are available or a search is in progress. Widgets remain editable in the desktop editor.")
+        Toggle {
+            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+            checked: card.tab.hideUnavailableLyrics
+            accentColor: ThemeBackend.mauve
+            baseColor: ThemeBackend.surface1
+            handleColor: ThemeBackend.crust
+            handleOffColor: ThemeBackend.text
+            onToggled: function(c) { card.tab.setHideUnavailableLyrics(c); }
+        }
+    }
+
     widgetComponent: Component {
         BarPreviewWidget {
             property string mediaInfoMode: tab.mediaInfoMode

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Isolated Media source-selection tests; never launches the desktop shell."""
+"""Isolated Media source and visibility tests; never launches the desktop shell."""
 import hashlib
 import json
 import os
@@ -36,7 +36,8 @@ palette_dir = Path(env["HOME"]) / ".local/state/serpantinum"
 palette_dir.mkdir(parents=True)
 for filename in ("qs_colors.json", "qs_matugen_colors.json"):
     (palette_dir / filename).write_text("{}\n")
-for filename in ("lyrics.qml", "lyrics_io.qml", "mpris.qml", "source_settings.qml"):
+for filename in ("lyrics.qml", "lyrics_io.qml", "components.qml", "persistence.qml", "mpris.qml",
+                 "settings_reader.qml", "settings_writer.qml", "wayland_imports.qml", "source_settings.qml"):
     source = (ROOT / "tests/media" / filename).read_text()
     (work / filename).write_text(source.replace('"../../src/quickshell', '"src/quickshell'))
 env.update(QT_QPA_PLATFORM="offscreen", QT_QUICK_BACKEND="software", QT_FORCE_STDERR_LOGGING="1",
@@ -49,6 +50,7 @@ for title, artist, text in (("Cached A", "Test", "Cached A"), ("Cached B", "Test
 local_file = work / "local.lrc"
 local_file.write_text("[00:00.00]Local lyrics\n")
 env["MEDIA_TEST_LRC"] = str(local_file)
+env["MEDIA_TEST_PERSISTENCE_TOKEN"] = work.name
 
 
 def run(label, command, marker=None):
@@ -75,6 +77,18 @@ def run(label, command, marker=None):
 run("selection", [qt_tests, "-input", "tests/media/tst_selection.qml", "-o", "-,txt"])
 run("lyrics", ["quickshell", "--no-color", "-p", str(work / "lyrics.qml")], "PASS: LyricsContexts")
 run("lyrics-io", ["quickshell", "--no-color", "-p", str(work / "lyrics_io.qml")], "PASS: Lyrics IO")
+run("components", ["quickshell", "--no-color", "-p", str(work / "components.qml")], "PASS: Components")
 run("mpris", [sys.executable, str(ROOT / "tests/media/mpris_fixture.py"), str(work / "mpris.qml")], "PASS: MPRIS integration")
 run("source-settings", [sys.executable, str(ROOT / "tests/media/source_settings.py"), str(work / "source_settings.qml")], "PASS: Source settings")
+run("cross-process", [sys.executable, str(ROOT / "tests/media/cross_process.py"), str(work)], "PASS: Cross-process Config")
+run("persistence", ["quickshell", "--no-color", "-p", str(work / "persistence.qml")], "PASS: Settings saved")
+env["MEDIA_TEST_READ"] = "1"
+run("persistence", ["quickshell", "--no-color", "-p", str(work / "persistence.qml")], "PASS: Settings restored")
+if "wayland-imports" in sys.argv[1:]:
+    display = os.environ.get("WAYLAND_DISPLAY", "")
+    if not display:
+        raise SystemExit("Wayland import check requested without WAYLAND_DISPLAY")
+    socket = Path(display) if Path(display).is_absolute() else Path(os.environ["XDG_RUNTIME_DIR"]) / display
+    env.update(QT_QPA_PLATFORM="wayland", WAYLAND_DISPLAY=str(socket))
+    run("wayland-imports", ["quickshell", "--no-color", "-p", str(work / "wayland_imports.qml")], "PASS: Wayland component imports")
 print(f"Diagnostics (outside the repository): {work}")

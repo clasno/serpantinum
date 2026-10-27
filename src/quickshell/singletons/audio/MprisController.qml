@@ -15,6 +15,8 @@ Singleton {
         return PlayerSelection.sources(Mpris.players.values, musicSource,
             Config.getSetting("media.musicSourceName", ""));
     }
+    readonly property bool hideWhenIdle: Config.getSetting("media.hideWhenIdle", false)
+    readonly property bool hideUnavailableLyrics: Config.getSetting("media.hideUnavailableLyrics", false)
 
     readonly property var _playerWatch: {
         let players = Mpris.players.values;

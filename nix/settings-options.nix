@@ -227,6 +227,8 @@ in
       type = freeform {
         musicSource = mkOpt types.str "Global MPRIS application key selected in Settings, or automatic (the default).";
         musicSourceName = mkOpt types.str "Display name retained when the selected MPRIS application is unavailable. Defaults to an empty string.";
+        hideWhenIdle = mkOpt types.bool "Hide the bar media module when no track is available. Keep media and available lyrics visible while paused. Defaults to false.";
+        hideUnavailableLyrics = mkOpt types.bool "Hide desktop lyrics content and background while lyrics are unavailable or loading. Defaults to false.";
       };
       default = { };
     };

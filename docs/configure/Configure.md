@@ -140,16 +140,18 @@ The configuration file is located at `~/.config/serpantinum/settings.json` (or `
 | `bar.mediaShowIcon` | `boolean` | `true` | Displays album art or music icon. |
 | `bar.mediaShowControls` | `boolean` | `true` | Displays previous, play and next buttons. |
 
-### Media source
+### Media source and visibility
 
-The source option is available in **Settings → Bar → Modules → Media**.
-It is stored under `media`, because the source also controls desktop music
+These options are available in **Settings → Bar → Modules → Media**.
+They are stored under `media`, because the source also controls desktop music
 and lyrics widgets, including widgets on other monitors.
 
 | Key | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
 | `media.musicSource` | `string` | `"automatic"` | Automatic selection or the application key saved by the Media source selector. |
 | `media.musicSourceName` | `string` | `""` | Display name retained while the selected application is unavailable. |
+| `media.hideWhenIdle` | `boolean` | `false` | Hide media when no track is available. Keep the selected player's current track and controls visible while paused. |
+| `media.hideUnavailableLyrics` | `boolean` | `false` | Hide desktop lyrics content and background when inactive, loading, or unavailable for the current track. |
 
 - **Automatic** keeps the existing selection order: playing, last-playing,
   loaded, controllable, then any available player. Ties use the MPRIS D-Bus name
@@ -173,6 +175,12 @@ without a network request.
 
 Changes apply immediately and persist across restarts. Missing keys and legacy
 category policies from earlier versions of this feature use Automatic.
+
+Hidden media takes no bar layout space and ignores input; the settings preview
+stays visible. Hidden lyrics keep their subscription, so discovering a result
+can reveal the widget again. Use the desktop editor to move or configure an
+invisible lyrics widget.
+
 
 ### Launcher
 

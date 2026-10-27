@@ -13,8 +13,8 @@ Item {
 
     Component.onCompleted: Qt.callLater(function() {
         let cases = [test_contextIsolation, test_staleResponseAndABA, test_sourceChangeSameSong,
-            test_negativeResultDoesNotRefetch, test_metadataClearsImmediately,
-            test_noSubscriberRejectsLateResponse];
+            test_visibilityAndSubscription, test_negativeResultDoesNotRefetch,
+            test_metadataClearsImmediately, test_noSubscriberRejectsLateResponse];
         try {
             for (let run of cases) {
                 init();
@@ -72,6 +72,7 @@ Item {
         popupContext = providerComponent.createObject(test, {player: browser});
         globalContext.subscribe();
         popupContext.subscribe();
+        Shell.Config.rawSettings = {media: {hideUnavailableLyrics: true, hideWhenIdle: true}};
     }
 
     function cleanup() {
@@ -129,6 +130,31 @@ Item {
         clone.destroy();
     }
 
+    function test_visibilityAndSubscription() {
+        compare(globalContext.showContent, false); // loading
+        compare(globalContext.subscribers, 1);
+        verify(deliver(globalContext, session(globalContext), "found"));
+        compare(globalContext.showContent, true);
+        let searches = globalContext.searches;
+        let generation = globalContext.requestGeneration;
+        spotify.playbackState = MprisPlaybackState.Paused;
+        compare(globalContext.showContent, true);
+        compare(globalContext.hasLyrics, true);
+        compare(globalContext.lyrics[0].text, "found");
+        compare(globalContext.subscribers, 1);
+        Shell.Config.rawSettings = {media: {hideUnavailableLyrics: true, hideWhenIdle: false}};
+        compare(globalContext.showContent, true);
+        spotify.playbackState = MprisPlaybackState.Playing;
+        compare(globalContext.showContent, true);
+        compare(globalContext.searches, searches);
+        compare(globalContext.requestGeneration, generation);
+        spotify.playbackState = MprisPlaybackState.Stopped;
+        compare(globalContext.showContent, false);
+        compare(globalContext.hasLyrics, false);
+        Shell.Config.rawSettings = {};
+        compare(globalContext.showContent, true); // backward-compatible empty states
+    }
+
     function test_negativeResultDoesNotRefetch() {
         let s = session(globalContext);
         s.netEaseDone = true;
@@ -140,6 +166,7 @@ Item {
         globalContext.triggerSearch();
         compare(globalContext.searches, searches);
         compare(globalContext.hasLyrics, false);
+        compare(globalContext.showContent, false);
         globalContext.unsubscribe();
     }
 
@@ -147,6 +174,7 @@ Item {
         verify(deliver(globalContext, session(globalContext), "old"));
         spotify.metadata = {"mpris:trackid": "/track/another"};
         compare(globalContext.hasLyrics, false);
+        compare(globalContext.showContent, false);
         compare(globalContext.subscribers, 1);
     }
 
