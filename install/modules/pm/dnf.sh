@@ -262,17 +262,6 @@ pm_disable_display_manager() {
     fi
 }
 
-pm_configure_sddm_cursor() {
-    local conf="$1" theme=""
-    if [ -d /usr/share/icons/Adwaita/cursors ]; then
-        theme="Adwaita"
-    else
-        theme="$(find /usr/share/icons -mindepth 2 -maxdepth 2 -type d -name cursors 2>/dev/null | head -n 1 | xargs -r dirname | xargs -r basename)"
-    fi
-    [ -n "$theme" ] || return 0
-    sudo sed -i -e "/^ThemeDir=/a CursorTheme=$theme" -e "/^ThemeDir=/a CursorSize=24" "$conf"
-}
-
 pm_remove_pkg() {
     true
 }

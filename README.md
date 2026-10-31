@@ -25,9 +25,9 @@
 > [!IMPORTANT]
 > **Migrating from v1:** All previous configuration will be backed up and unused. Configuration of compositor settings such as monitors, keybinds, and autostart is now up to you, as the project migrated from being dotfiles to being a shell.
 
-### Arch Linux, Fedora and their derivatives
+### Arch Linux, Fedora, Void Linux and their derivatives
 
-For Arch-based distributions (including systemd, OpenRC, and other init systems) and for Fedora-based distributions such as Nobara and Ultramarine, run the automated installation script. It detects your distribution and uses `pacman` or `dnf`.
+For Arch-based distributions (including systemd, OpenRC, and other init systems), for Fedora-based distributions such as Nobara and Ultramarine, and for Void Linux (glibc and musl), run the automated installation script. It detects your distribution and uses `pacman`, `dnf` or `xbps`.
 
 Use this installer:
 
@@ -54,7 +54,7 @@ See the [NixOS installation guide](https://serpantinum.dev/installation/nixos) f
 
 ## Supported compositors
 
-Hyprland, Niri, Sway and Mango. The installer detects the running compositor and deploys its configuration. On Fedora, Mango is installed from the Terra repository.
+Hyprland, Niri, Sway and Mango. The installer detects the running compositor and deploys its configuration. On Fedora, Mango is installed from the Terra repository. On Void Linux, Hyprland is installed from the third-party black-hole.dev repository.
 
 ---
 

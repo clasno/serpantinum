@@ -25,6 +25,9 @@ if [[ -z "$PROJECT_ROOT" || ! -f "$PROJECT_ROOT/install/modules/deps.sh" || ! -d
             sudo pacman -Sy --noconfirm --needed git
         elif command -v dnf &>/dev/null; then
             sudo dnf install -y git
+        elif command -v xbps-install &>/dev/null; then
+            sudo xbps-install -Suy xbps || true
+            sudo xbps-install -Sy git
         fi
     fi
     if [ ! -d "$CACHE_BASE/.git" ]; then

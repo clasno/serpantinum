@@ -7,6 +7,8 @@ detect_package_manager() {
         echo "pacman"
     elif command -v dnf &>/dev/null; then
         echo "dnf"
+    elif command -v xbps-install &>/dev/null; then
+        echo "void"
     fi
 }
 
