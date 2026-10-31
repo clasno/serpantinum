@@ -101,17 +101,33 @@ RowLayout {
         opacity: showProgress
         clip: true
         cornerRadius: ThemeBackend.borderRadius
-        horizontalPadding: root.s(8)
-        buttonIcon: "󰁨"
+        horizontalPadding: root.s(12)
+        contentAlignment: Qt.AlignLeft
         buttonText: typeof I18n !== "undefined" ? I18n.t("music.eq.dynamic", "Dynamic") : "Dynamic"
         textFontSize: root.s(11.5)
-        iconFontSize: root.s(13)
-        accentColor: dynamicOn ? (ThemeBackend.mauve || "#cba6f7") : (ThemeBackend.surface0 || "#313244")
+        clickSound: dynamicEqToggle.toggleSound
+        accentColor: ThemeBackend.surface0 || "#313244"
         bgOpacity: ThemeBackend.elementOpacity
-        textColor: dynamicOn ? (ThemeBackend.base || "#1e1e2e") : (ThemeBackend.text || "#cdd6f4")
-        Behavior on accentColor { ColorAnimation { duration: 250 } }
-        Behavior on textColor { ColorAnimation { duration: 250 } }
+        textColor: ThemeBackend.text || "#cdd6f4"
         onClicked: root.setAudioFlag("dyneq", !dynamicOn)
+
+        Toggle {
+            id: dynamicEqToggle
+            anchors.verticalCenter: parent.verticalCenter
+            x: I18n.rtl ? root.s(5) : parent.width - width - root.s(5)
+            horizontalPadding: 0
+            trackWidth: root.s(30)
+            trackHeight: root.s(16)
+            implicitHeight: trackHeight
+            cornerRadius: ThemeBackend.borderRadius
+            checked: dynamicEqBtn.dynamicOn
+            accentColor: ThemeBackend.mauve || "#cba6f7"
+            baseColor: ThemeBackend.surface2 || "#585b70"
+            onToggled: (isChecked) => {
+                root.setAudioFlag("dyneq", isChecked);
+                checked = Qt.binding(() => dynamicEqBtn.dynamicOn);
+            }
+        }
     }
 
     ClickButton {
