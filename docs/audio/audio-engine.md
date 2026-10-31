@@ -32,13 +32,12 @@ The Arch packages bundle a release, and the Nix flake builds it from source.
 
 ## Moving from EasyEffects
 
-The first time the shell starts with the audio engine installed, it hands your audio over to it. This runs once:
+The first time the installer or the shell runs with the audio engine installed, Serpantinum undoes what it set up for EasyEffects. This runs once:
 
-- stops and disables the EasyEffects user service, and removes a plain-file `ee-eq.service` if you have one
-- stops a running EasyEffects process
-- removes the EasyEffects autostart entry and the `live_eq` preset that Serpantinum used to generate
-- removes the old `systemctl --user enable --now easyeffects` line from your Hyprland, Niri, Sway and Mango configs, keeping a `.pre-audio-engine.bak` copy of each file it edits
+- stops the EasyEffects instance that the old equalizer started, the one running the `live_eq` preset, and `ee-eq.service` if it is running
+- removes the `live_eq` preset that Serpantinum used to generate
+- removes the `systemctl --user enable --now easyeffects` line from the autostart file Serpantinum installed for Hyprland, Niri, Sway or Mango, keeping a `.pre-audio-engine.bak` copy of each file it edits
 
-EasyEffects itself stays installed and your own presets are untouched. EasyEffects can also process the microphone, which Serpantinum does not, so if you rely on that you can start it again yourself.
+Anything you set up yourself stays as it is. EasyEffects stays installed, and your presets, services and autostart entries are not touched. An EasyEffects you started yourself keeps running. A line you moved or changed, and config files that are links, for example from Home Manager or a dotfiles manager, are left alone too.
 
-If your EasyEffects service is declared in Home Manager or NixOS, for example with `services.easyeffects.enable = true`, the unit is a read-only link into the Nix store. Serpantinum stops it for the session, but it comes back at the next login until you remove that option from your configuration.
+If EasyEffects is still running or set to start at login after this, Serpantinum tells you once: in the installer output, or as a notification when the shell starts. EasyEffects can interfere with the audio engine, so turn it off unless you use it for something else, such as microphone effects, which Serpantinum does not do. Depending on how you set it up, that means `systemctl --user disable --now easyeffects`, turning off its start-at-login option in EasyEffects, or removing `services.easyeffects.enable` from your Home Manager configuration.
