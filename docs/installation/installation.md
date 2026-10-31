@@ -93,6 +93,7 @@ Do not run the installer script on a system where Serpantinum is installed this 
 | Install dependencies | Done, including Iosevka Nerd Font |
 | Replace `quickshell-git` with `quickshell` | Done, the package conflicts with `quickshell-git` and installs `quickshell` |
 | Install `serpantinum` and `serpantinumd` | Done, in `/usr/bin` |
+| Install the [audio engine](/audio) | Done, `serpantinum-audio` in `/usr/bin` |
 | Lock screen PAM service | Done, `/etc/pam.d/serpantinum` |
 | SDDM theme files | Done, in `/usr/share/sddm/themes/material-you` |
 | Compositor configs | Manual, step 1 |
@@ -195,7 +196,7 @@ On systemd, enable the audio stack, networking, and power profiles:
 
 ```bash
 sudo systemctl --global enable pipewire wireplumber pipewire-pulse
-systemctl --user enable --now pipewire wireplumber pipewire-pulse easyeffects
+systemctl --user enable --now pipewire wireplumber pipewire-pulse
 sudo systemctl enable --now NetworkManager power-profiles-daemon
 ```
 
