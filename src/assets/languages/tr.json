@@ -1687,6 +1687,11 @@
       "status_running": "Serpantinum arka plan programı çalışıyor (PID: {PID}).",
       "status_stopped": "Serpantinum arka plan programı çalışmıyor.",
       "unknown_arg": "Bilinmeyen argüman: {ARG}"
+    },
+    "app_name": "Serpantinum",
+    "easyeffects": {
+      "title": "EasyEffects hâlâ etkin",
+      "body": "Serpantinum artık kendi ses motoruna sahip ve EasyEffects onunla çakışabilir. EasyEffects'i yalnızca Serpantinum için kullandıysanız, oturum açılışında başlamasını kapatın."
     }
   },
   "installer": {

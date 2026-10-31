@@ -1735,6 +1735,11 @@
       "status_running": "Служба serpantinum запущена (PID: {PID}).",
       "status_stopped": "Служба serpantinum не запущена.",
       "unknown_arg": "Неизвестный аргумент: {ARG}"
+    },
+    "app_name": "Serpantinum",
+    "easyeffects": {
+      "title": "EasyEffects всё ещё включён",
+      "body": "Теперь у Serpantinum есть собственный аудиодвижок, и EasyEffects может ему мешать. Если вы использовали EasyEffects только для Serpantinum, отключите его запуск при входе в систему."
     }
   },
   "installer": {
