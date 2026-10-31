@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [ -z "$SERPANTINUM_DIR" ]; then
+if [ -z "${SERPANTINUM_DIR:-}" ]; then
     SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
     export SERPANTINUM_DIR="$(dirname "$SCRIPT_DIR")"
 fi
