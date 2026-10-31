@@ -6,6 +6,8 @@ qs_ensure_cache "music"
 STATE_FILE="$QS_RUN_MUSIC/eq_state.json"
 SINK_NAME="serpantinum_sink"
 DAEMON_STATE="${XDG_STATE_HOME:-$HOME/.local/state}/serpantinum/audio.state"
+TEST_FILE="$QS_RUN_MUSIC/channel_test.wav"
+TEST_PID_FILE="$QS_RUN_MUSIC/channel_test.pid"
 
 declare -A PRESETS=(
     [Flat]="0 0 0 0 0 0 0 0 0 0"
