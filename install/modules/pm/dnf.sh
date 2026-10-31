@@ -6,6 +6,7 @@ PM_EXTRA_PKGS=(jetbrains-mono-fonts fontawesome-6-free-fonts xdg-user-dirs xwayl
 PM_SDDM_EXTRA_PKGS=(sddm-wayland-generic adwaita-cursor-theme)
 PM_SDDM_WAYLAND_DEFAULT=true
 PM_SDDM_CURSOR_FIX=true
+PM_AUDIO_BUILD_PKGS=(gcc-c++ make pkgconf-pkg-config pipewire-devel)
 
 declare -A PM_PKG_MAP=(
     [kitty]="kitty"
@@ -61,9 +62,6 @@ declare -A PM_PKG_MAP=(
     [slurp]="slurp"
     [wmctrl]="wmctrl"
     [power-profiles-daemon]="ppd-service"
-    [easyeffects]="easyeffects"
-    [calf]="calf"
-    [lsp-plugins-lv2]="lsp-plugins-lv2"
     [qt5-wayland]="qt5-qtwayland"
     [qt5-quickcontrols]="qt5-qtquickcontrols"
     [qt5-quickcontrols2]="qt5-qtquickcontrols2"

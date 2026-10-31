@@ -809,7 +809,7 @@
       "empty_title": "Нет приложений в автозапуске",
       "empty_desc": "Нажмите «добавить приложение», чтобы указать команды, бинарники, задержку и количество запусков.",
       "name_label": "Название",
-      "name_placeholder": "например, discord, EasyEffects, скрипт",
+      "name_placeholder": "например, discord, Telegram, скрипт",
       "exec_label": "Команда / исполняемый файл",
       "exec_placeholder": "Путь к бинарнику или команда с флагами (например, discord --start-minimized)",
       "browse_file": "Выбрать файл",
@@ -1161,7 +1161,9 @@
     "equalizer": "Эквалайзер",
     "eq": {
       "apply": "Применить",
-      "saved": "Сохранено"
+      "saved": "Сохранено",
+      "dynamic": "Динамический",
+      "dynamic_active": "Подстраивается под ваш звук"
     },
     "audio": {
       "title": "Аудио",

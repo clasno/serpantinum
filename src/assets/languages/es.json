@@ -809,7 +809,7 @@
       "empty_title": "Sin aplicaciones de inicio",
       "empty_desc": "Haga clic en 'añadir aplicación' para especificar comandos, binarios, retrasos y recuentos de repetición.",
       "name_label": "Nombre",
-      "name_placeholder": "p. ej., Discord, EasyEffects, script",
+      "name_placeholder": "p. ej., Discord, Telegram, script",
       "exec_label": "Comando ejecutable",
       "exec_placeholder": "Ruta al binario o nombre con flags (p. ej., discord --start-minimized)",
       "browse_file": "Explorar archivo",
@@ -1161,7 +1161,9 @@
     "equalizer": "Ecualizador",
     "eq": {
       "apply": "Aplicar",
-      "saved": "Guardado"
+      "saved": "Guardado",
+      "dynamic": "Dinámico",
+      "dynamic_active": "Adaptándose a tu sonido"
     },
     "audio": {
       "title": "Audio",

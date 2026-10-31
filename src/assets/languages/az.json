@@ -1111,7 +1111,9 @@
     "equalizer": "Səs tezliyi tənzimləyicisi",
     "eq": {
       "apply": "Tətbiq et",
-      "saved": "Saxlanılıb"
+      "saved": "Saxlanılıb",
+      "dynamic": "Dinamik",
+      "dynamic_active": "Səsinizə uyğunlaşır"
     },
     "audio": {
       "title": "Səs",

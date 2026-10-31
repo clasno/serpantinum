@@ -9,6 +9,7 @@ PM_EXTRA_PKGS=(
 PM_SDDM_EXTRA_PKGS=()
 PM_SDDM_WAYLAND_DEFAULT=true
 PM_SDDM_CURSOR_FIX=true
+PM_AUDIO_BUILD_PKGS=(gcc make pkg-config pipewire-devel)
 
 VOID_HYPRLAND_REPO_CONF="/etc/xbps.d/20-serpantinum-hyprland.conf"
 VOID_HYPRLAND_REPO_BASE="https://mirror.black-hole.dev"

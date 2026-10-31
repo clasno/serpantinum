@@ -1117,7 +1117,9 @@
     "equalizer": "Equalizer",
     "eq": {
       "apply": "Toepassen",
-      "saved": "Opgeslagen"
+      "saved": "Opgeslagen",
+      "dynamic": "Dynamisch",
+      "dynamic_active": "Past zich aan je geluid aan"
     },
     "presets": {
       "flat": "Vlak",

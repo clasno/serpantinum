@@ -1117,7 +1117,9 @@
     "equalizer": "Bộ cân chỉnh âm thanh",
     "eq": {
       "apply": "Áp dụng",
-      "saved": "Đã lưu"
+      "saved": "Đã lưu",
+      "dynamic": "Động",
+      "dynamic_active": "Đang thích ứng với âm thanh của bạn"
     },
     "audio": {
       "title": "Âm thanh",

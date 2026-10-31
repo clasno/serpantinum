@@ -91,6 +91,30 @@ RowLayout {
     }
 
     ClickButton {
+        id: dynamicEqBtn
+        readonly property real showProgress: Math.max(0.0, 1.0 - root.actionBtnMorph)
+        readonly property bool dynamicOn: !!root.eqData && root.eqData.dyneq === true
+        Layout.preferredHeight: root.s(26)
+        Layout.preferredWidth: root.dynamicEqBtnWidth * showProgress
+        implicitWidth: Layout.preferredWidth
+        visible: showProgress > 0.01
+        opacity: showProgress
+        clip: true
+        cornerRadius: ThemeBackend.borderRadius
+        horizontalPadding: root.s(8)
+        buttonIcon: "󰁨"
+        buttonText: typeof I18n !== "undefined" ? I18n.t("music.eq.dynamic", "Dynamic") : "Dynamic"
+        textFontSize: root.s(11.5)
+        iconFontSize: root.s(13)
+        accentColor: dynamicOn ? (ThemeBackend.mauve || "#cba6f7") : (ThemeBackend.surface0 || "#313244")
+        bgOpacity: ThemeBackend.elementOpacity
+        textColor: dynamicOn ? (ThemeBackend.base || "#1e1e2e") : (ThemeBackend.text || "#cdd6f4")
+        Behavior on accentColor { ColorAnimation { duration: 250 } }
+        Behavior on textColor { ColorAnimation { duration: 250 } }
+        onClicked: root.setAudioFlag("dyneq", !dynamicOn)
+    }
+
+    ClickButton {
         id: actionBtn
         Layout.preferredHeight: root.s(26)
         Layout.preferredWidth: root.actionBtnCurrentWidth
@@ -128,12 +152,10 @@ RowLayout {
             ? (root.hasTargetPlayer && !Lyrics.loading)
             : (bottomSectionSwitch.currentIndex === 1
                 ? (Math.abs(root.balanceSlider.value) >= 0.005 || root.eqData.mono === true || root.eqData.swap === true || String(root.eqData.dynamics || "off") !== "off")
-                : true)
+                : !(root.eqData && root.eqData.dyneq === true))
         opacity: bottomSectionSwitch.currentIndex === 2
             ? (root.hasTargetPlayer && !Lyrics.loading ? 1.0 : 0.45)
-            : (bottomSectionSwitch.currentIndex === 1
-                ? (enabled ? 1.0 : 0.45)
-                : 1.0)
+            : (enabled ? 1.0 : 0.45)
         Behavior on opacity { NumberAnimation { duration: 250 } }
         Behavior on accentColor { ColorAnimation { duration: 250 } }
         Behavior on textColor { ColorAnimation { duration: 250 } }

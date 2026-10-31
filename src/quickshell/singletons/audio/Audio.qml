@@ -2,8 +2,10 @@ pragma Singleton
 import QtQuick
 import QtQml
 import Quickshell
+import Quickshell.Io
 import Quickshell.Services.Pipewire
 
+import "../../"
 import "AudioCache.js" as AudioCache
 
 Singleton {
@@ -135,6 +137,25 @@ Singleton {
     }
 
     readonly property PwNode defaultSink: Pipewire.defaultAudioSink
+
+    readonly property string processingSinkName: "serpantinum_sink"
+    property string processingTargetName: ""
+
+    readonly property string activeOutputName: {
+        const sink = root.defaultSink;
+        const name = sink && sink.name ? sink.name : "";
+        if (name === root.processingSinkName && root.processingTargetName !== "") return root.processingTargetName;
+        return name;
+    }
+
+    FileView {
+        path: Caching.runDir + "/audio-target"
+        watchChanges: true
+        printErrors: false
+        onFileChanged: reload()
+        onLoaded: root.processingTargetName = text().split("\n")[0].trim()
+        onLoadFailed: root.processingTargetName = ""
+    }
     readonly property PwNode defaultSource: Pipewire.defaultAudioSource
 
     function setDefaultOutput(node) {

@@ -143,7 +143,9 @@
     "equalizer": "イコライザー",
     "eq": {
       "apply": "適用",
-      "saved": "保存済み"
+      "saved": "保存済み",
+      "dynamic": "ダイナミック",
+      "dynamic_active": "サウンドに合わせて調整中"
     },
     "presets": {
       "flat": "フラット",

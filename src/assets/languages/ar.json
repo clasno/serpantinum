@@ -191,7 +191,7 @@
         "title": "تمكين التشغيل التلقائي"
       },
       "name_label": "الاسم",
-      "name_placeholder": "مثال: Discord، EasyEffects، سكربت مخصص",
+      "name_placeholder": "مثال: Discord، Telegram، سكربت مخصص",
       "no_log": "السجل فارغ حاليًا",
       "repeat_delay_desc": "الفارق الزمني بين عمليات التشغيل المتكررة",
       "repeat_delay_label": "فاصل التكرار",
@@ -1323,7 +1323,9 @@
     "by_artist": "بواسطة {artist}",
     "eq": {
       "apply": "تطبيق",
-      "saved": "تم الحفظ"
+      "saved": "تم الحفظ",
+      "dynamic": "ديناميكي",
+      "dynamic_active": "يتكيف مع صوتك"
     },
     "audio": {
       "title": "الصوت",

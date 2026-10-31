@@ -1117,7 +1117,9 @@
     "equalizer": "Égaliseur",
     "eq": {
       "apply": "Appliquer",
-      "saved": "Enregistré"
+      "saved": "Enregistré",
+      "dynamic": "Dynamique",
+      "dynamic_active": "S'adapte à votre son"
     },
     "presets": {
       "flat": "Plat",

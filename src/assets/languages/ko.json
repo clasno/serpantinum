@@ -1117,7 +1117,9 @@
     "equalizer": "이퀄라이저",
     "eq": {
       "apply": "적용",
-      "saved": "저장됨"
+      "saved": "저장됨",
+      "dynamic": "다이내믹",
+      "dynamic_active": "사운드에 맞춰 조정하는 중"
     },
     "audio": {
       "title": "오디오",

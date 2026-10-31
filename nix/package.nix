@@ -1,5 +1,6 @@
 { lib
 , stdenv
+, callPackage
 , makeWrapper
 , python3
 , qt5
@@ -12,9 +13,7 @@
 , brightnessctl
 , ddcutil
 , cava
-, calf
 , cliphist
-, easyeffects
 , fastfetch
 , fd
 , ffmpeg
@@ -53,6 +52,7 @@
 , quickshell
 , libpulseaudio
 , pipewire
+, serpantinum-audio ? callPackage ./audio.nix { }
 , ...
 }:
 let
@@ -67,9 +67,7 @@ let
     brightnessctl
     ddcutil
     cava
-    calf
     cliphist
-    easyeffects
     fastfetch
     fd
     ffmpeg
@@ -107,6 +105,7 @@ let
     tesseract
     zbar
     quickshell
+    serpantinum-audio
   ];
   qtDeps = [
     quickshell

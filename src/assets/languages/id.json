@@ -1117,7 +1117,9 @@
     "equalizer": "Equalizer",
     "eq": {
       "apply": "Terapkan",
-      "saved": "Disimpan"
+      "saved": "Disimpan",
+      "dynamic": "Dinamis",
+      "dynamic_active": "Menyesuaikan dengan suaramu"
     },
     "presets": {
       "flat": "Datar",

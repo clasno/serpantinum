@@ -146,7 +146,9 @@
     "equalizer": "Korektor",
     "eq": {
       "apply": "Zastosuj",
-      "saved": "Zapisano"
+      "saved": "Zapisano",
+      "dynamic": "Dynamiczny",
+      "dynamic_active": "Dostosowuje się do twojego dźwięku"
     },
     "presets": {
       "flat": "Płaski",

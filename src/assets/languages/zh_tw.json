@@ -1117,7 +1117,9 @@
     "equalizer": "等化器",
     "eq": {
       "apply": "套用",
-      "saved": "已儲存"
+      "saved": "已儲存",
+      "dynamic": "動態",
+      "dynamic_active": "正在適應你的聲音"
     },
     "presets": {
       "flat": "平直",

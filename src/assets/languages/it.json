@@ -1116,7 +1116,9 @@
     "equalizer": "Equalizzatore",
     "eq": {
       "apply": "Applica",
-      "saved": "Salvati"
+      "saved": "Salvati",
+      "dynamic": "Dinamico",
+      "dynamic_active": "Si adatta al tuo suono"
     },
     "audio": {
       "title": "Audio",

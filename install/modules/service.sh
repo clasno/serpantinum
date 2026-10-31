@@ -107,7 +107,6 @@ setup_services() {
         systemctl --user start pipewire.socket pipewire-pulse.socket wireplumber.service 2>/dev/null || true
     fi
 
-    enable_user_service "easyeffects" "$init_sys"
     enable_system_service "NetworkManager" "$init_sys"
     enable_system_service "power-profiles-daemon" "$init_sys"
 }

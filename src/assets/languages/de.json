@@ -809,7 +809,7 @@
       "empty_title": "Keine Autostart-Anwendungen",
       "empty_desc": "Klicken Sie auf 'Anwendung hinzufügen', um Befehle, Binärdateien, Verzögerungen und Wiederholungen festzulegen.",
       "name_label": "Name",
-      "name_placeholder": "z. B. Discord, EasyEffects, Skript",
+      "name_placeholder": "z. B. Discord, Telegram, Skript",
       "exec_label": "Ausführungsbefehl",
       "exec_placeholder": "Binärpfad oder Name mit Flags (z. B. discord --start-minimized)",
       "browse_file": "Datei durchsuchen",
@@ -1161,7 +1161,9 @@
     "equalizer": "Equalizer",
     "eq": {
       "apply": "Anwenden",
-      "saved": "Gespeichert"
+      "saved": "Gespeichert",
+      "dynamic": "Dynamisch",
+      "dynamic_active": "Passt sich deinem Klang an"
     },
     "audio": {
       "title": "Audio",

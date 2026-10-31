@@ -15,7 +15,7 @@ depends=(
     'imagemagick' 'wget' 'file' 'git' 'psmisc'
     'ffmpeg' 'fastfetch' 'quickshell' 'unzip' 'python-websockets' 'python-jeepney' 'qt6-websockets'
     'grim' 'playerctl' 'satty' 'xdg-desktop-portal-gtk' 'slurp' 'wmctrl' 'power-profiles-daemon'
-    'easyeffects' 'calf' 'lsp-plugins-lv2' 'qt5-wayland' 'qt5-quickcontrols' 'qt5-quickcontrols2'
+    'qt5-wayland' 'qt5-quickcontrols' 'qt5-quickcontrols2'
     'qt5-graphicaleffects' 'qt6-wayland' 'qt5ct' 'qt6ct' 'adwaita-icon-theme' 'gpu-screen-recorder'
     'wf-recorder' 'adw-gtk-theme' 'wl-gammarelay-rs'
     'ttf-iosevka-nerd' 'pambase' 'curl' 'pciutils'
@@ -34,10 +34,13 @@ conflicts=('serpantinum' 'quickshell-git')
 backup=('etc/pam.d/serpantinum')
 install=serpantinum-git.install
 _skiver=0.4.0
+_audiover=0.1.0
 source=("$pkgname::git+$url.git"
-        "ski-$_skiver-x86_64-linux.tar.gz::https://github.com/ilyamiro/Ski/releases/download/v$_skiver/ski-$_skiver-x86_64-linux.tar.gz")
+        "ski-$_skiver-x86_64-linux.tar.gz::https://github.com/ilyamiro/Ski/releases/download/v$_skiver/ski-$_skiver-x86_64-linux.tar.gz"
+        "serpantinum-audio-$_audiover-x86_64-linux.tar.gz::https://github.com/ilyamiro/serpantinum-audio/releases/download/v$_audiover/serpantinum-audio-$_audiover-x86_64-linux.tar.gz")
 sha256sums=('SKIP'
-            '4910f07c4fbbbea952b2236c22d99dc782acb21a6380c786d7beb0cd285d8202')
+            '4910f07c4fbbbea952b2236c22d99dc782acb21a6380c786d7beb0cd285d8202'
+            '6a5a987b086bf1679ae3b4d5620aee29cc221a61ef2c3449c6c4ab7d843fc12c')
 
 pkgver() {
     cd "$pkgname"

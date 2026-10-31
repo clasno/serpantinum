@@ -1141,7 +1141,9 @@
     "equalizer": "Equalizer",
     "eq": {
       "apply": "Apply",
-      "saved": "Saved"
+      "saved": "Saved",
+      "dynamic": "Dynamic",
+      "dynamic_active": "Adapting to your sound"
     },
     "audio": {
       "title": "Audio",
@@ -1814,6 +1816,15 @@
       "download_failed": "Could not download Ski, skipping. You can install it later from github.com/ilyamiro/Ski.",
       "checksum_failed": "Ski download failed its checksum check, skipping.",
       "unsupported_arch": "Prebuilt Ski packages exist only for x86_64, skipping."
+    },
+    "audio": {
+      "installing": "Installing the Serpantinum audio engine...",
+      "up_to_date": "-> Serpantinum audio engine {version} is already installed.",
+      "installed": "Installed the Serpantinum audio engine {version}",
+      "building": "No prebuilt audio engine for this system, building it from source...",
+      "install_failed": "Failed to install the Serpantinum audio engine. The equalizer will not work until it is installed from github.com/ilyamiro/serpantinum-audio.",
+      "download_failed": "Could not download the Serpantinum audio engine, skipping. You can install it later from github.com/ilyamiro/serpantinum-audio.",
+      "checksum_failed": "The audio engine download failed its checksum check, skipping."
     },
     "deploy": {
       "configuring_sddm": "Configuring SDDM display manager...",

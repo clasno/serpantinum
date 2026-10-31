@@ -1117,7 +1117,9 @@
     "equalizer": "Ekolayzer",
     "eq": {
       "apply": "Uygula",
-      "saved": "Kaydedildi"
+      "saved": "Kaydedildi",
+      "dynamic": "Dinamik",
+      "dynamic_active": "Sesinize uyum sağlıyor"
     },
     "presets": {
       "flat": "Düz",
