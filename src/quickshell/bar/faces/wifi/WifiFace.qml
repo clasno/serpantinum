@@ -133,15 +133,24 @@ Item {
         if (!Networking || !Networking.devices) return;
         let devs = Networking.devices.values || Networking.devices;
         let count = devs.length !== undefined ? devs.length : (devs.count !== undefined ? devs.count : 0);
+        let bestEth = null;
+        let bestRank = -1;
+        let wifi = null;
         for (let i = 0; i < count; i++) {
             let d = devs[i] !== undefined ? devs[i] : (devs.get ? devs.get(i) : null);
             if (!d) continue;
-            if (!root.ethDevice && isEthDevice(d)) {
-                root.ethDevice = d;
-            } else if (!root.wifiDevice && isWifiDevice(d)) {
-                root.wifiDevice = d;
+            if (isEthDevice(d)) {
+                let rank = d.connected ? 2 : (d.hasLink ? 1 : 0);
+                if (rank > bestRank) {
+                    bestEth = d;
+                    bestRank = rank;
+                }
+            } else if (!wifi && isWifiDevice(d)) {
+                wifi = d;
             }
         }
+        if (root.wifiDevice !== wifi) root.wifiDevice = wifi;
+        if (root.ethDevice !== bestEth) root.ethDevice = bestEth;
     }
 
     function getWifiNetworksList() {
@@ -265,7 +274,7 @@ Item {
                 property var device: modelData
                 Component.onCompleted: {
                     if (device && device.type === DeviceType.Wired) {
-                        root.ethDevice = device;
+                        root.findDevices();
                     } else if (device && device.type === DeviceType.Wifi) {
                         root.wifiDevice = device;
                     }
