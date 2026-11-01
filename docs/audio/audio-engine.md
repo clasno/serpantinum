@@ -14,8 +14,10 @@ It creates a virtual output called **Serpantinum**, processes everything sent to
 ## In the shell
 
 - `serpantinumd start` starts the engine, so it runs whenever the shell does.
-- The **Serpantinum** output appears in the volume popup next to your devices, just as the EasyEffects sink did. It is the default output while the engine runs.
-- Choosing a device in the volume popup moves the processed audio to that device, and the popup highlights the device you are actually listening on. When the engine stops, your previous default output comes back.
+- Your real device stays the default output. The engine moves each app's audio onto the **Serpantinum** output, processes it and plays it on the default device, just as EasyEffects did. The **Serpantinum** output appears in the volume popup next to your devices.
+- Choosing a device in the volume popup moves the processed audio to that device. The volume keys and every app that asks for the default output see your real device.
+- An app you move to another device yourself, for example in pavucontrol, stays there and skips the engine. Apps that pick their own device are left alone too.
+- When the engine stops, apps go back to the default device.
 - Settings survive a reboot. The engine keeps them in `~/.local/state/serpantinum/audio.state`, and the music popup reads them back from there.
 
 ## Dynamic EQ
